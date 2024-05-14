@@ -1,14 +1,23 @@
 package Proyecto;
 
-import Proyecto.Tablerito;
+
+import Proyecto.Abstractas.JuegoAbstracto;
 
 import java.util.Scanner;
 
-public class Juego {
+public class Juego extends JuegoAbstracto {
 
     private boolean terminado = false;
     private Scanner sc = new Scanner(System.in);
 
+    private ConfigurarJuego configuracion;
+
+    public Juego(ConfigurarJuego configuracion) {
+        this.configuracion = configuracion;
+    }
+
+
+    @Override
     public void Start(Jugador[] jugadores) {
 
         Tablerito tablero = crearTablero();
@@ -16,11 +25,12 @@ public class Juego {
         Jugar(tablero, jugadores);
     }
 
-    private Tablerito crearTablero() {
+    @Override
+    public Tablerito crearTablero() {
         System.out.println("Introduce el tamaño del tablero con el que quieres jugar: ");
         int fila = sc.nextInt();
 
-        while (fila <= 1) {
+        while (fila <= 2) {
             System.out.println("Introduce un tamaño de tablero posible, para que jueguen dos jugadores");
             fila = sc.nextInt();
         }
@@ -28,11 +38,13 @@ public class Juego {
         return new Tablerito(fila);
     }
 
-    private void imprimirTablero(Tablerito tablero) {
+    @Override
+    public void imprimirTablero(Tablerito tablero) {
         tablero.imprimirTablero();
     }
 
-    private void Jugar(Tablerito tablerito, Jugador[] jugadores) {
+    @Override
+    public void Jugar(Tablerito tablerito, Jugador[] jugadores) {
         int turno = 0;
         Jugador[] turnoJugadores = new Jugador[2];
 
@@ -71,8 +83,8 @@ public class Juego {
         }
     }
 
-
-    private void introducirFicha(Jugador jugador, Tablerito tablerito) {
+    @Override
+    public void introducirFicha(Jugador jugador, Tablerito tablerito) {
         while (true) {
             System.out.println("Introduce una posición en la fila en la que quieres poner tu ficha");
             int fila = sc.nextInt();
@@ -89,6 +101,7 @@ public class Juego {
         }
     }
 
+    @Override
     public boolean comprobarGanador(String[][] tablero, Jugador jugador) {
         if (comprobarHorizontal(tablero, jugador)) {
             return true;
@@ -103,7 +116,8 @@ public class Juego {
         return false;
     }
 
-    private boolean comprobarHorizontal(String[][] tablero, Jugador jugador) {
+    @Override
+    public boolean comprobarHorizontal(String[][] tablero, Jugador jugador) {
         boolean comprobar = false;
         for (int i = 0; i < tablero.length; i++) { // Este itera sobre la filas
             for (int j = 0; j < tablero[i].length - 1; j++) { // Este itera sobre las fila de esa columna
@@ -124,7 +138,8 @@ public class Juego {
         return comprobar;
     }
 
-    private boolean comprobarVertical(String[][] tablero, Jugador jugador) {
+    @Override
+    public boolean comprobarVertical(String[][] tablero, Jugador jugador) {
         boolean comprobar = false;
         for (int i = 0; i < tablero.length; i++) { // Este itera sobre la filas
             for (int j = 0; j < tablero[i].length - 1; j++) { // Este itera sobre las fila de esa columna
@@ -145,7 +160,8 @@ public class Juego {
         return comprobar;
     }
 
-    private boolean comprobarDiagonal(String[][] tablero, Jugador jugador) {
+    @Override
+    public boolean comprobarDiagonal(String[][] tablero, Jugador jugador) {
         boolean comprobar = false;
 
         for (int i = 0; i < tablero.length; i++) { // Este itera sobre la filas
@@ -191,7 +207,8 @@ public class Juego {
         return comprobar;
     }
 
-    private boolean comprobarDiagonalInversa(String[][] tablero, Jugador jugador) {
+    @Override
+    public boolean comprobarDiagonalInversa(String[][] tablero, Jugador jugador) {
         boolean comprobar = false;
 
         for (int i = 0; i < tablero.length; i++) { // Este itera sobre la filas
@@ -216,7 +233,26 @@ public class Juego {
         }
         return comprobar;
     }
+
+    @Override
+    protected void Start() {
+
+    }
+
+    @Override
+    protected void IniciarProgramaNraya() {
+
+        System.out.println(".:.:. ¡Bienvenidos al Proyecto Juegos! .:.:.");
+
+        configuracion.establecerJugadores();
+        configuracion.seleccionarPrimerJugador();
+        int numeroDeJuegos = configuracion.definirJuegos();
+
+
+    }
+
+
+    public boolean isTerminado() {
+        return terminado;
+    }
 }
-
-
-

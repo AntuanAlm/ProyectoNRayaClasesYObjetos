@@ -1,37 +1,17 @@
 package Proyecto;
 
-import Proyecto.Juego;
-import Proyecto.Jugador;
+import Proyecto.Abstractas.ConfigurarJuegoAbstracto;
 
 import java.util.Scanner;
 
-public class Main {
+public class ConfigurarJuego extends ConfigurarJuegoAbstracto {
 
     private static Jugador[] jugadores = new Jugador[2];
-    private static Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
 
-        System.out.println(".:.:. Bienvenidos al Proyecto.Juego N en Raya .:.:.");
-
-        establecerJugadores();
-        seleccionarPrimerJugador();
-        int numeroDeJuegos = definirJuegos();
-
-        Juego[] juegos = new Juego[numeroDeJuegos];
-
-        for (int i = 0; i < juegos.length; i++) {
-            juegos[i] = new Juego();
-        }
-
-        for (int i = 0; i < juegos.length; i++) {
-            System.out.println("Bienvenido al juego número " + (i + 1) + ", de " + juegos.length + " juegos N en Raya!!");
-            juegos[i].Start(jugadores);
-        }
-
-    }
-
-    private static void establecerJugadores() {
+    @Override
+    public void establecerJugadores() {
         for (int i = 0; i < 2; i++) {
             System.out.println("Introduce el nombre del jugador" + (i + 1));
             String nombre = sc.nextLine();
@@ -39,7 +19,8 @@ public class Main {
         }
     }
 
-    private static void seleccionarPrimerJugador() {
+    @Override
+    public void seleccionarPrimerJugador() {
         System.out.println("El jugador 1 es : " + jugadores[0].getNombre());
         System.out.println("El jugador 2 es : " + jugadores[1].getNombre());
         System.out.println("¿Qué jugador queréis que empiece?");
@@ -66,13 +47,18 @@ public class Main {
                 jugadores[1].setFicha(1);
                 jugadores[0].setFicha(2);
                 break;
-        } // no hay default, ya que, tiene el bucle justo arriba y ya sólo puedes elegir un jugador 1 o 2.
+        } // no hay default, ya que, tiene el bucle justo arriba y ya sólo puedes e
     }
 
-    private static int definirJuegos() {
+    @Override
+    public int definirJuegos() {
         System.out.println("¿Cuántos juegos quieres jugar?");
         int cantidadJuegos = sc.nextInt();
 
         return cantidadJuegos;
+    }
+
+    public static Jugador[] getJugadores() {
+        return jugadores;
     }
 }
